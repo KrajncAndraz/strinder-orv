@@ -74,9 +74,33 @@ def obrezi(img, crop_size=(160, 200)):
 
 def augumentiraj(image):
     try:
-        #zaenkrat sam gaussian blur !!!!ne dotikaj se to je delo za clana 1
-        augmented_img = cv2.GaussianBlur(image, (9, 9), 0)
+        #1.augmentacija - rotacija
+        angle = np.random.uniform(-5, 5)
+        augmented_img = rotiraj_sliko(image, angle)
+
         return augmented_img
     except Exception as e:
         print("Napaka pri augmentaciji slike:", str(e))
         return image
+    
+
+def rotiraj_sliko(image, angle_degrees):
+    angle_rad = np.deg2rad(angle_degrees)
+    h, w = image.shape[:2]
+    center_x, center_y = w // 2, h // 2
+
+    rotated = np.zeros_like(image)
+
+    for y in range(h):
+        for x in range(w):
+            x_shifted = x - center_x
+            y_shifted = y - center_y
+
+            src_x = int(np.cos(angle_rad) * x_shifted + np.sin(angle_rad) * y_shifted + center_x)
+            src_y = int(-np.sin(angle_rad) * x_shifted + np.cos(angle_rad) * y_shifted + center_y)
+
+            if 0 <= src_x < w and 0 <= src_y < h:
+                rotated[y, x] = image[src_y, src_x]
+
+    return rotated
+    
