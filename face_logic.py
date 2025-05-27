@@ -93,6 +93,11 @@ def augumentiraj(image):
             delta = np.random.randint(-30, 30)
             augumented_image = spremeni_svetlost(augumented_image, delta)
 
+        #4.augmentacija - bluranje 70% sansa
+        izvedi_rotacijo = np.random.uniform(0,10)
+        if izvedi_rotacijo <= 7:
+            velikost_jedra = 3
+            augumented_image = bluraj(augumented_image, velikost_jedra)
 
         return augumented_image, original_image
     except Exception as e:
