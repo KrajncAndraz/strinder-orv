@@ -1,6 +1,8 @@
 import base64
 import os
 from datetime import datetime
+import numpy as np
+import cv2
 
 # Dummy database of users' "face data"
 user_face_db = {}
@@ -31,3 +33,40 @@ def verify_face_image(user_id, image):
     except Exception as e:
         print("Error during verification:", str(e))
         return False
+
+
+def preprocesiranje_slik(images_base64):
+    procesirane_slike = []
+    for img_base64 in images_base64:
+        try:
+            img_bytes = base64.b64decode(img_base64)
+            img_array = np.frombuffer(img_bytes, np.uint8)
+            img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+            if img is None:
+                print("Napaka pri dekodiranju slike.")
+                continue
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            img = obrezi(img)    
+            img = augumentiraj(img)
+            procesirane_slike.append(img)
+        except Exception as e:
+            print("Napaka pri obdelavi slike:", str(e))
+    return procesirane_slike
+
+def obrezi(img, crop_size=(160, 160)):
+    h, w = img.shape[:2]
+    ch, cw = crop_size
+    start_y = max((h - ch) // 2, 0)
+    start_x = max((w - cw) // 2, 0)
+    end_y = start_y + ch
+    end_x = start_x + cw
+    return img[start_y:end_y, start_x:end_x]
+
+def augumentiraj(image):
+    try:
+        #zaenkrat sam gaussian blur !!!!ne dotikaj se to je delo za clana 1
+        augmented_img = cv2.GaussianBlur(image, (5, 5), 0)
+        return augmented_img
+    except Exception as e:
+        print("Napaka pri augmentaciji slike:", str(e))
+        return image
