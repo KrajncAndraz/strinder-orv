@@ -11,7 +11,7 @@ def setup_face():
     user_id = data.get('userId')
     images = data.get('images', [])
 
-    if not user_id or len(images) != 5:
+    if not user_id:
         return jsonify({'success': False, 'message': 'Missing userId or 5 images'}), 400
 
     success = save_face_setup(user_id, images)
