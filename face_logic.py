@@ -75,8 +75,11 @@ def obrezi(img, crop_size=(160, 200)):
 def augumentiraj(image):
     try:
         #1.augmentacija - rotacija
-        angle = np.random.uniform(-5, 5)
-        augmented_img = rotiraj_sliko(image, angle)
+        #angle = np.random.uniform(-5, 5)
+        #augmented_img = rotiraj_sliko(image, angle)
+
+        #2.augmentacija - vertikalni flip
+        augmented_img = vertikalni_flip(image)
 
         return augmented_img
     except Exception as e:
@@ -85,6 +88,8 @@ def augumentiraj(image):
     
 
 def rotiraj_sliko(image, angle_degrees):
+
+
     angle_rad = np.deg2rad(angle_degrees)
     h, w = image.shape[:2]
     center_x, center_y = w // 2, h // 2
@@ -103,4 +108,12 @@ def rotiraj_sliko(image, angle_degrees):
                 rotated[y, x] = image[src_y, src_x]
 
     return rotated
+
+def vertikalni_flip(image):
+    h, w = image.shape[:2]
+    flipped = np.zeros_like(image)
+    for y in range(h):
+        for x in range(w):
+            flipped[y, x] = image[y, w - 1 - x]
+    return flipped
     
