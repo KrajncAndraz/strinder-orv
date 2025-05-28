@@ -11,7 +11,7 @@ def setup_face():
     data = request.get_json()
     user_id = data.get('userId')
     images = data.get('images', [])
-
+    print("GOT REQUEST")
     if not user_id:
         return jsonify({'success': False, 'message': 'Missing userId or 5 images'}), 400
 

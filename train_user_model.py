@@ -36,7 +36,7 @@ if __name__ == '__main__':
         sys.exit(1)
     USER_ID = sys.argv[1]
     FACES_DIR = f'faces/{USER_ID}'
-    NEGATIVE_DIR = 'train_faces'
+    NEGATIVE_DIR = 'train_faces/0'
     MODEL_DIR = 'models'
     os.makedirs(MODEL_DIR, exist_ok=True)
 
@@ -45,9 +45,21 @@ if __name__ == '__main__':
         pos_images = load_images_from_folder(FACES_DIR)
         neg_images = load_images_from_folder(NEGATIVE_DIR)
 
+        if len(pos_images) == 0:
+            print(f"Error: No positive images found in {FACES_DIR}")
+            sys.exit(1)
+        if len(neg_images) == 0:
+            print(f"Error: No negative images found in {NEGATIVE_DIR}")
+            sys.exit(1)
+
         # Labels: 1 for user, 0 for others
         X_images = pos_images + neg_images
         y = np.array([1]*len(pos_images) + [0]*len(neg_images))
+
+        # Check that there are at least two classes
+        if len(set(y)) < 2:
+            print("Error: Need at least two classes (positive and negative images) for training.")
+            sys.exit(1)
 
         # Load FaceNet
         embedder = FaceNet()

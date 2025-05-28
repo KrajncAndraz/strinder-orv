@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 import numpy as np
 import cv2
+import subprocess
 
 # Dummy database of users' "face data"
 user_face_db = {}
@@ -19,6 +20,7 @@ def save_face_setup(user_id, images):
             # Pretvori RGB nazaj v BGR za shranjevanje z OpenCV
             img_bgr = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
             cv2.imwrite(filepath, img_bgr)
+        train_user(user_id)  # Začni treniranje modela
         return True
     except Exception as e:
         print("Error during setup:", str(e))
@@ -160,4 +162,7 @@ def bluraj(image, velikost_jedra=3):
                 okolica = padded[y:y+velikost_jedra, x:x+velikost_jedra, ch]
                 blurana_slika[y, x, ch] = np.mean(okolica)
     return blurana_slika.astype(np.uint8)
+
+def train_user(user_id):
+    subprocess.run(['python', 'train_user_model.py', str(user_id)])
     
