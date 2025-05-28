@@ -8,13 +8,13 @@ import cv2
 user_face_db = {}
 
 def save_face_setup(user_id, images):
-    SAVE_DIR = 'faces'
+    SAVE_DIR = os.path.join('faces', str(user_id))
     os.makedirs(SAVE_DIR, exist_ok=True)
     try:
         # Preprocesiraj slike (crop + augmentacija)
         procesirane_slike = preprocesiranje_slik(images)
         for idx, img in enumerate(procesirane_slike):
-            filename = f"{user_id}_setup_{idx+1}_{datetime.now().strftime('%Y%m%d%H%M%S')}.jpg"
+            filename = f"{idx:05d}.jpg"
             filepath = os.path.join(SAVE_DIR, filename)
             # Pretvori RGB nazaj v BGR za shranjevanje z OpenCV
             img_bgr = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
