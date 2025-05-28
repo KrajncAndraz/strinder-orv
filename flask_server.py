@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from face_logic import save_face_setup, verify_face_image
+import subprocess # for running model training script
 
 
 app = Flask(__name__)
@@ -16,7 +17,9 @@ def setup_face():
 
     success = save_face_setup(user_id, images)
     if success:
-        return jsonify({'success': True, 'message': 'Face data setup complete'})
+        # Call the training script as a subprocess
+        subprocess.Popen(['python', 'train_user_model.py', str(user_id)])
+        return jsonify({'success': True, 'message': 'Face data setup complete, training started'})
     else:
         return jsonify({'success': False, 'message': 'Setup failed'}), 500
 
