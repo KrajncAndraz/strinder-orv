@@ -16,6 +16,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY flask_server.py .
 COPY face_logic.py .
+COPY train_user_model.py .
+COPY verify_user.py .
 
 # Expose the Flask port
 EXPOSE 5000
