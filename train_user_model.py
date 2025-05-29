@@ -1,6 +1,9 @@
 # requirements: pip install keras-facenet scikit-learn opencv-python numpy
-
 import os
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+
 import sys
 import glob
 import shutil
@@ -79,8 +82,8 @@ if __name__ == '__main__':
         print(f"Model saved to {model_path}")
 
         # Delete user images
-        shutil.rmtree(FACES_DIR)
-        print(f"Deleted user images in {FACES_DIR}")
+        #shutil.rmtree(FACES_DIR)
+        #print(f"Deleted user images in {FACES_DIR}")
 
     except Exception as e:
         print(f"Error during training: {e}")

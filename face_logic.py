@@ -1,5 +1,9 @@
 import base64
 import os
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+
 from datetime import datetime
 import numpy as np
 import cv2
@@ -32,9 +36,21 @@ def verify_face_image(user_id, image):
         save_dir = os.path.join('verification_images', str(user_id))
         os.makedirs(save_dir, exist_ok=True)
         img_path = os.path.join(save_dir, 'verify.jpg')
-        with open(img_path, "wb") as fh:
-            fh.write(base64.b64decode(image))
-        return True
+        img_bytes = base64.b64decode(image)
+        img_array = np.frombuffer(img_bytes, np.uint8)
+        img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img, success = obrezi(img)
+        if not success:
+            print("Nisem zaznal obraza.")
+            return False    
+        img_bgr = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+        cv2.imwrite(img_path, img_bgr)
+        status = subprocess.run(['python', 'verify_user.py', str(user_id), img_path])
+        if status.returncode == 0:
+            return True
+        else:
+            return False
     except Exception as e:
         print("Error during verification:", str(e))
         return False
@@ -165,4 +181,6 @@ def bluraj(image, velikost_jedra=3):
 
 def train_user(user_id):
     subprocess.run(['python', 'train_user_model.py', str(user_id)])
-    
+
+def verify_user(user_id, image_path):
+    subprocess.run(['python', 'verify_user.py', str(user_id), str(image_path)])
