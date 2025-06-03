@@ -32,6 +32,28 @@ def build_model(input_shape, num_filters=32, learning_rate=0.001):
                   metrics=['accuracy'])
     return model
 
+def grid_search(X_train, y_train, X_val, y_val, input_shape, USER_ID):
+    # Simple grid search over two hyperparameters
+    best_acc = 0
+    best_params = {}
+    results = []
+    for num_filters in [16, 32]:
+        for lr in [0.001, 0.0005]:
+            model = build_model(input_shape, num_filters=num_filters, learning_rate=lr)
+            history = model.fit(X_train, y_train, epochs=10, batch_size=16, verbose=0, validation_data=(X_val, y_val))
+            val_acc = history.history['val_accuracy'][-1]
+            results.append((num_filters, lr, val_acc))
+            if val_acc > best_acc:
+                best_acc = val_acc
+                best_params = {'num_filters': num_filters, 'learning_rate': lr}
+                best_model = model
+    # Log results for report
+    with open(f'models/logs/hyperparam_log_for_{USER_ID}.txt', 'a') as f:
+        for nf, lr, acc in results:
+            f.write(f'num_filters={nf}, learning_rate={lr}, val_acc={acc:.4f}\n')
+    return best_model, best_params
+
+
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print("Usage: python train_user_model.py <user_id>")
