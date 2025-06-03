@@ -1,7 +1,4 @@
 Flask
 numpy
 opencv-python-headless
-keras-facenet
-scikit-learn
-joblib
 tensorflow
