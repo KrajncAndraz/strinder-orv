@@ -4,6 +4,9 @@ import glob
 import numpy as np
 import cv2
 import shutil
+import tensorflow as tf
+from tensorflow import keras
+from sklearn.model_selection import train_test_split
 
 def load_images_from_folder(folder):
     images = []
@@ -35,9 +38,14 @@ if __name__ == '__main__':
         if len(neg_images) == 0:
             print(f"Error: No negative images found in {NEGATIVE_DIR}")
             sys.exit(1)
-
-       
-
+            
+        # Prepare data
+        pos_labels = [1] * len(pos_images)
+        neg_labels = [0] * len(neg_images)
+        X = np.array(pos_images + neg_images)
+        y = np.array(pos_labels + neg_labels)
+        X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
+        
         # Delete user images
         shutil.rmtree(FACES_DIR)
         print(f"Deleted user images in {FACES_DIR}")
