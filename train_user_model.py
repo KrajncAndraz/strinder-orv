@@ -83,6 +83,16 @@ if __name__ == '__main__':
         y = np.array(pos_labels + neg_labels)
         X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
         
+        # Model training with hyperparameter search
+        input_shape = X_train.shape[1:]
+        model, best_params = grid_search(X_train, y_train, X_val, y_val, input_shape, USER_ID)
+        print(f"Best hyperparameters: {best_params}")
+
+        # Save model
+        model_path = os.path.join(MODEL_DIR, f'{USER_ID}_model.h5')
+        model.save(model_path)
+        print(f"Model saved to {model_path}")
+
         # Delete user images
         shutil.rmtree(FACES_DIR)
         print(f"Deleted user images in {FACES_DIR}")
