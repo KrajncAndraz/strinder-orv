@@ -14,9 +14,9 @@ def load_images_from_folder(folder):
     for filename in glob.glob(os.path.join(folder, '*.jpg')):
         img = cv2.imread(filename)
         if img is not None:
-            img, success = obrezi(img)
-            if not success:
-                continue  # Skip if face not detected
+            #img, success = obrezi(img)
+            #if not success:
+            #    continue  # Skip if face not detected
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             img = img.astype('float32') / 255.0  # Normalize to [0, 1]
             images.append(img)
@@ -96,7 +96,7 @@ if __name__ == '__main__':
         print(f"Best hyperparameters: {best_params}")
 
         # Save model
-        model_path = os.path.join(MODEL_DIR, f'{USER_ID}_model.h5')
+        model_path = os.path.join(MODEL_DIR, f'{USER_ID}_model.keras')
         model.save(model_path)
         print(f"Model saved to {model_path}")
 

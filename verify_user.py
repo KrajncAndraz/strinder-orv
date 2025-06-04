@@ -18,7 +18,7 @@ def load_and_preprocess_image(image_path):
     return img
 
 def verify_user(user_id, image_path, threshold=0.5):
-    model_path = os.path.join('models', f'{user_id}_model.h5')
+    model_path = os.path.join('models', f'{user_id}_model.keras')
     if not os.path.exists(model_path):
         print(f"Model za uporabnika {user_id} ne obstaja.")
         return False
