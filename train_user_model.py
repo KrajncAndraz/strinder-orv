@@ -25,7 +25,7 @@ def load_images_from_folder(folder):
 def build_model(input_shape, num_filters=32, learning_rate=0.001):
     model = keras.Sequential([
         keras.Input(shape=input_shape),
-keras.layers.Conv2D(num_filters, (3,3), activation='relu'),
+        keras.layers.Conv2D(num_filters, (3,3), activation='relu'),
         keras.layers.MaxPooling2D((2,2)),
         keras.layers.Conv2D(num_filters*2, (3,3), activation='relu'),
         keras.layers.MaxPooling2D((2,2)),
