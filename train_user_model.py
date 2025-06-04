@@ -24,7 +24,8 @@ def load_images_from_folder(folder):
 
 def build_model(input_shape, num_filters=32, learning_rate=0.001):
     model = keras.Sequential([
-        keras.layers.Conv2D(num_filters, (3,3), activation='relu', input_shape=input_shape),
+        keras.Input(shape=input_shape),
+keras.layers.Conv2D(num_filters, (3,3), activation='relu'),
         keras.layers.MaxPooling2D((2,2)),
         keras.layers.Conv2D(num_filters*2, (3,3), activation='relu'),
         keras.layers.MaxPooling2D((2,2)),
@@ -53,6 +54,7 @@ def grid_search(X_train, y_train, X_val, y_val, input_shape, USER_ID):
                 best_params = {'num_filters': num_filters, 'learning_rate': lr}
                 best_model = model
     # Log results for report
+    os.makedirs('models/logs', exist_ok=True)
     with open(f'models/logs/hyperparam_log_for_{USER_ID}.txt', 'a') as f:
         for nf, lr, acc in results:
             f.write(f'num_filters={nf}, learning_rate={lr}, val_acc={acc:.4f}\n')
