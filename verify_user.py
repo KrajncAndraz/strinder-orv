@@ -1,5 +1,6 @@
 import sys
 import os
+from tensorflow import keras
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
@@ -27,7 +28,7 @@ def verify_user(user_id, image_path, threshold=0.5):
         print(f"Slika ne obstaja.")
         return False
 
-    clf = joblib.load(model_path)
+    clf = keras.models.load_model(model_path)
     embedder = FaceNet()
     img = load_and_preprocess_image(image_path)
     if img is None:
