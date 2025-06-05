@@ -7,16 +7,12 @@ import shutil
 import tensorflow as tf
 from tensorflow import keras
 from sklearn.model_selection import train_test_split
-from face_logic import obrezi
 
 def load_images_from_folder(folder):
     images = []
     for filename in glob.glob(os.path.join(folder, '*.jpg')):
         img = cv2.imread(filename)
         if img is not None:
-            #img, success = obrezi(img)
-            #if not success:
-            #    continue  # Skip if face not detected
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             img = img.astype('float32') / 255.0  # Normalize to [0, 1]
             images.append(img)
