@@ -6,9 +6,14 @@ import tempfile
 import pytest
 from train_user_model import load_images_from_folder, build_model, grid_search
 
-def create_dummy_image(path, color=(255, 0, 0)):
+def create_dummy_image(path, color=(255, 255, 255)):
+    path = str(path)  # Ensure string path for OpenCV
+    parent = os.path.dirname(path)
+    if parent and not os.path.exists(parent):
+        os.makedirs(parent)
     img = np.full((10, 10, 3), color, dtype=np.uint8)
     cv2.imwrite(path, img)
+    assert os.path.exists(path), f"Image file {path} was not created"
 
 def test_load_images_from_folder(tmp_path):
     img_path = tmp_path / "img1.jpg"
