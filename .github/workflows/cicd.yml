@@ -43,4 +43,4 @@ jobs:
           context: .
           file: docker/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/strinder:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/strinder-faceid:latest
