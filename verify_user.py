@@ -1,52 +1,51 @@
 import sys
 import os
+import cv2
+import numpy as np
+from tensorflow import keras
+from face_logic import obrezi
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
-
-import cv2
-import numpy as np
-import joblib
-from keras_facenet import FaceNet
 
 def load_and_preprocess_image(image_path):
     img = cv2.imread(image_path)
     if img is None:
         return None
+    img , success = obrezi(img)  # Crop the face using the existing function
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img = cv2.resize(img, (160, 160))
+    img = img.astype('float32') / 255.0
     return img
 
 def verify_user(user_id, image_path, threshold=0.5):
-    model_path = os.path.join('models', f'{user_id}_model.pkl')
+    model_path = os.path.join('models', f'{user_id}_model.keras')
     if not os.path.exists(model_path):
-        print(f"Model za uporabnika {user_id} ne obstaja.")
-        return False
-    
-    if not os.path.exists(image_path):
-        print(f"Slika ne obstaja.")
+        print(f"Model for user {user_id} does not exist.")
         return False
 
-    clf = joblib.load(model_path)
-    embedder = FaceNet()
+    if not os.path.exists(image_path):
+        print("Image does not exist.")
+        return False
+
+    model = keras.models.load_model(model_path)
     img = load_and_preprocess_image(image_path)
     if img is None:
-        print("Napaka pri nalaganju slike.")
+        print("Error loading image.")
         return None
-    emb = embedder.embeddings([img])[0].reshape(1, -1)
-    prob = clf.predict_proba(emb)[0][1]  # verjetnost, da je user
-    print(f"Verjetnost, da je pravi uporabnik: {prob:.2f}")
+    img = np.expand_dims(img, axis=0)  # Add batch dimension
+    prob = model.predict(img)[0][0]    # Get probability from sigmoid output
+    print(f"Probability user is genuine: {prob:.2f}")
     return prob > threshold
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
-        print("Uporaba: python verify_user.py <user_id> <pot_do_slike>")
+        print("Usage: python verify_user.py <user_id> <image_path>")
         sys.exit(1)
     user_id = sys.argv[1]
     image_path = sys.argv[2]
     result = verify_user(user_id, image_path)
     if result is None:
-        print("Verifikacija neuspešna.")
+        print("Verification failed.")
     else:
-        print("Verifikacija uspešna.")
-    print("Rezultat:", result)
+        print("Verification successful." if result else "Verification failed.")
+    print("Result:", result)
