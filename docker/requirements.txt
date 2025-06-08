@@ -1,6 +1,5 @@
 flask
-keras-facenet
 scikit-learn
 opencv-python
 numpy
-joblib
+tensorflow
