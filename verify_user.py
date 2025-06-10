@@ -44,8 +44,11 @@ if __name__ == '__main__':
     user_id = sys.argv[1]
     image_path = sys.argv[2]
     result = verify_user(user_id, image_path)
-    if result is None:
-        print("Verification failed.")
+    if result == True:
+        print("Verification successful.")
+        print("Result:", result)
+        sys.exit(0)
     else:
-        print("Verification successful." if result else "Verification failed.")
-    print("Result:", result)
+        print("Verification failed.")
+        print("Result:", result)
+        sys.exit(1)
