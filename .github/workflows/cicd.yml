@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies in venv
         run: venv\Scripts\pip install --no-user -r requirements.txt
       - name: Run tests
-        run: venv\Scripts\pytest tests
+        run: venv\Scripts\python -m pytest tests
 
   build-and-push:
     needs: test
