@@ -27,10 +27,10 @@ jobs:
       - name: Upgrade pip in venv
         run:
           venv\Scripts\python -m ensurepip --upgrade || (
-          echo "ensurepip failed, installing pip manually" &&
-          curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py &&
-          venv\Scripts\python get-pip.py
-      )
+            echo "ensurepip failed, installing pip manually" &&
+            curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py &&
+            venv\Scripts\python get-pip.py
+          )
       - name: Install dependencies in venv
         run: venv\Scripts\pip install --no-user -r docker/requirements.txt
       - name: Run tests
