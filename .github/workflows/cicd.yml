@@ -23,7 +23,7 @@ jobs:
       - name: Remove old venv
         run: if (Test-Path venv) { Remove-Item -Recurse -Force venv }
       - name: Set up venv
-        run: python -m venv venv
+        run: python3 -m venv venv
       - name: Upgrade pip in venv
         run:
           venv\Scripts\python -m ensurepip --upgrade || (
