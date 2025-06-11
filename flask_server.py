@@ -4,7 +4,7 @@ import subprocess # for running model training script
 
 
 app = Flask(__name__)
-
+# test for runner
 # Route for 2FA face setup
 @app.route('/setup-face', methods=['POST'])
 def setup_face():
