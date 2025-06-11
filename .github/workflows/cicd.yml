@@ -43,7 +43,10 @@ jobs:
         env:
             TMP: C:\tmp
             TEMP: C:\tmp
-        run: venv\Scripts\python -m pytest tests
+        run: venv\Scripts\python -m pytest tests --basetemp=C:\tmp\pytest-tmp
+      - name: Clean temp dir
+        run: rmdir /s /q C:\tmp
+        shell: cmd
 
   build-and-push:
     needs: test
