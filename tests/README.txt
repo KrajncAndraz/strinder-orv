@@ -1,0 +1,1 @@
+From the root directory of the project, run the following command to execute all tests: py -3.11 -m pytest
