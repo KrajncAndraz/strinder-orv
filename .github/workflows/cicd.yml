@@ -35,7 +35,14 @@ jobs:
           }
       - name: Install dependencies in venv
         run: venv\Scripts\pip install --no-user -r docker/requirements.txt
+      - name: Set ASCII-only temp dir
+        run: |
+            mkdir C:\tmp
+        shell: cmd
       - name: Run tests
+        env:
+            TMP: C:\tmp
+            TEMP: C:\tmp
         run: venv\Scripts\python -m pytest tests
 
   build-and-push:
