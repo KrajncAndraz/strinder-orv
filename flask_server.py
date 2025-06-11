@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from face_logic import save_face_setup, verify_face_image
+#from face_logic import save_face_setup, verify_face_image
 import subprocess # for running model training script
 
 
@@ -15,7 +15,8 @@ def setup_face():
     if not user_id:
         return jsonify({'success': False, 'message': 'Missing userId or 5 images'}), 400
 
-    success = save_face_setup(user_id, images)
+    #success = save_face_setup(user_id, images)
+    success = True
     if success:
         # Call the training script as a subprocess
         subprocess.Popen(['python', 'train_user_model.py', str(user_id)])
@@ -36,7 +37,8 @@ def verify_face():
 
     print(f"[INFO] Verifying face for user '{user_id}'")
 
-    success = verify_face_image(user_id, image)
+    #success = verify_face_image(user_id, image)
+    success = True
     if success:
         return jsonify({'success': True, 'message': 'Face verified'})
     else:

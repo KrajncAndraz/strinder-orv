@@ -3,3 +3,4 @@ verification_images/
 train_faces/
 faces/
 .vs/
+venv/
