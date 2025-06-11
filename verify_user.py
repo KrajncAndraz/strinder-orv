@@ -51,3 +51,4 @@ if __name__ == '__main__':
     else:
         print("Verification failed.")
         print("Result:", result)
+        sys.exit(1)
