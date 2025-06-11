@@ -20,7 +20,7 @@ jobs:
       - name: Upgrade pip in venv
         run: venv\Scripts\python -m pip install --upgrade pip
       - name: Install dependencies in venv
-        run: venv\Scripts\pip install --no-user -r requirements.txt
+        run: venv\Scripts\pip install --no-user -r docker/requirements.txt
       - name: Run tests
         run: venv\Scripts\python -m pytest tests
 
