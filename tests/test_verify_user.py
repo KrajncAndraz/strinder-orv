@@ -12,7 +12,8 @@ def create_dummy_image(path, color=(255, 255, 255)):
     if parent and not os.path.exists(parent):
         os.makedirs(parent)
     img = np.full((10, 10, 3), color, dtype=np.uint8)
-    cv2.imwrite(path, img)
+    result = cv2.imwrite(path, img)
+    assert result, f"cv2.imwrite failed for {path}"
     assert os.path.exists(path), f"Image file {path} was not created"
 
 def test_load_and_preprocess_image_valid(tmp_path):
