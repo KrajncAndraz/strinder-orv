@@ -2,6 +2,7 @@ import os
 import shutil
 import numpy as np
 import cv2
+print(cv2.getBuildInformation())
 import tempfile
 import pytest
 from train_user_model import load_images_from_folder, build_model, grid_search

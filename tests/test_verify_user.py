@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import cv2
+print(cv2.getBuildInformation())
 import tempfile
 import pytest
 from unittest import mock
